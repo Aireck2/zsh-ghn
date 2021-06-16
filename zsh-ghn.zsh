@@ -119,4 +119,5 @@ function ghq::cache::clear() {
 alias ghn=ghq::factory
 
 zle -N ghq::find::project
-bindkey '^P' ghq::find::project
+#Press Ctrl+X+P
+bindkey '^XP' ghq::find::project
