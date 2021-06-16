@@ -13,6 +13,7 @@ GHQ_CACHE_PROJECT="${GHQ_CACHE_DIR}/${GHQ_CACHE_NAME}"
 
 # ghq_package_name='ghq'
 
+# ghq list simplify
 function ghq::projects::list() {
     if [ ! -e "${GHQ_CACHE_PROJECT}" ]; then
         ghq::cache::create::factory
@@ -44,6 +45,21 @@ function ghq::find::project() {
 
 function ghq::cache::list() {
     [ -e "${GHQ_CACHE_PROJECT}" ] && cat "${GHQ_CACHE_PROJECT}"
+}
+
+# ghq get simplify
+function ghq::new() {
+    local repository repository_path
+    repository="${1}"
+    repository_path="$(ghq root)/github.com/${GITHUB_USER}/${repository}"
+    ghq create "${repository}"
+    ghq::cache::clear
+    cd "${repository_path}" || cd - && git flow init -d
+}
+
+function ghq::cache::clear() {
+    [ -e "${GHQ_CACHE_PROJECT}" ] && rm -rf "${GHQ_CACHE_PROJECT}"
+    ghq::cache::create::factory
 }
 
 alias ghn=ghq::new
